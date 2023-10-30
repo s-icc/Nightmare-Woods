@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://bcpmggqvccmae"]
+
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_p5nqi"]
+[ext_resource type="Texture2D" uid="uid://b166ji5tfgld1" path="res://assets/forestSprites_ v1.2/ogre_.png" id="1_ymbea"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3lptu"]
+size = Vector2(12, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_spp4j"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cfw6h"]
+radius = 70.0
+
+[node name="Enemy" type="CharacterBody2D" node_paths=PackedStringArray("nav_agent")]
+z_index = 1
+collision_layer = 16
+collision_mask = 15
+script = ExtResource("1_p5nqi")
+speed = 35
+nav_agent = NodePath("Navigation/NavigationAgent2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_ymbea")
+hframes = 8
+vframes = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 12)
+shape = SubResource("RectangleShape2D_3lptu")
+
+[node name="Navigation" type="Node2D" parent="."]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Navigation"]
+
+[node name="RecalculateTimer" type="Timer" parent="Navigation"]
+wait_time = 0.5
+autostart = true
+
+[node name="Aggro" type="Node2D" parent="."]
+
+[node name="AggroRange" type="Area2D" parent="Aggro"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Aggro/AggroRange"]
+shape = SubResource("CircleShape2D_spp4j")
+debug_color = Color(0.690196, 0, 0.101961, 0.419608)
+
+[node name="DeAggroRange" type="Area2D" parent="Aggro"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Aggro/DeAggroRange"]
+shape = SubResource("CircleShape2D_cfw6h")
+
+[connection signal="timeout" from="Navigation/RecalculateTimer" to="." method="_on_recalculate_timer_timeout"]
+[connection signal="area_entered" from="Aggro/AggroRange" to="." method="_on_aggro_range_area_entered"]
+[connection signal="area_exited" from="Aggro/DeAggroRange" to="." method="_on_de_aggro_range_area_exited"]

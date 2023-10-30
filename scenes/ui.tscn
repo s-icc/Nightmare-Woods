@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://1bg5c8h0vftc"]
+
+[node name="ui" type="CanvasLayer"]
+
+[node name="debug_screen" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="debug_screen"]
+offset_left = 70.0
+offset_top = 26.0
+offset_right = 113.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Night"
+
+[node name="CheckBox" type="CheckBox" parent="debug_screen"]
+offset_left = 150.0
+offset_top = 26.0
+offset_right = 174.0
+offset_bottom = 50.0
